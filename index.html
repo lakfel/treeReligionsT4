@@ -26,7 +26,20 @@
 }
 
 </style>
-<svg width="1060" height="1060"></svg>
+<table>
+	<tr>
+		<td>
+				<h1> Religiones en el mundo</h1>
+				</br>
+				<p>A continuación se muestra un arbol radial con la información de todas las religiones y cultos existentes en el mundo. En el se encuentra agrupados y clasificados para poder ver su relación.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<svg width="1060" height="1060"></svg>
+		</td>
+	</tr>
+</table>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
 
@@ -42,11 +55,20 @@ var tree = d3.tree()
     .size([2 * Math.PI, 700])
     .separation(function(a, b) { return (a.parent == b.parent ? 1 : 2) / a.depth; });
 
+	var root ;
+	
 d3.csv("religiones.csv", function(error, data) {
   if (error) throw error;
 
-  var root = tree(stratify(data));
+   root = tree(stratify(data));
 
+	update(root)
+	  
+	  
+});
+
+function update(root)
+{
   var link = g.selectAll(".link")
     .data(root.links())
     .enter().append("path")
@@ -79,9 +101,9 @@ d3.csv("religiones.csv", function(error, data) {
 			d3.select(this)
 			.style("font-size","8");
 	  });
-	  
-	  
-});
+
+}
+
 
 function radialPoint(x, y) {
   return [(y = +y) * Math.cos(x -= Math.PI / 2), y * Math.sin(x)];
